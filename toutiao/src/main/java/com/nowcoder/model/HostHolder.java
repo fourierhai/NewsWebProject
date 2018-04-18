@@ -1,6 +1,5 @@
 package com.nowcoder.model;
 
-import com.nowcoder.model.User;
 import org.springframework.stereotype.Component;
 
 /**

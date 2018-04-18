@@ -25,7 +25,7 @@ import java.util.Map;
 public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-   @Autowired
+    @Autowired
     UserService userService;
 
     @RequestMapping(path = {"/reg/"}, method = {RequestMethod.GET, RequestMethod.POST})
@@ -53,22 +53,24 @@ public class LoginController {
             return ToutiaoUtil.getJSONString(1, "注册异常");
         }
     }
-    //登录
+
     @RequestMapping(path = {"/login/"}, method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public String login(Model model, @RequestParam("username") String username,
                         @RequestParam("password") String password,
-                        @RequestParam(value="rember", defaultValue = "0") int rememberme) {
+                        @RequestParam(value="rember", defaultValue = "0") int rememberme,
+                        HttpServletResponse response) {
         try {
-            Map<String, Object> map = userService.register(username, password);
+            Map<String, Object> map = userService.login(username, password);
             if (map.containsKey("ticket")) {
                 Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
                 //设置cookie全站有效
                 cookie.setPath("/");
-                // 如果有rememberme，就将cookie的有效期设为5天
                 if (rememberme > 0) {
+                    // 如果有rememberme，就将cookie的有效期设为5天
                     cookie.setMaxAge(3600*24*5);
                 }
+                response.addCookie(cookie);
                 return ToutiaoUtil.getJSONString(0, "注册成功");
             } else {
                 return ToutiaoUtil.getJSONString(1, map);
@@ -80,12 +82,9 @@ public class LoginController {
         }
     }
 
-
-    // 退出登录
     @RequestMapping(path = {"/logout/"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String logout(@CookieValue("ticket") String ticket) {
         userService.logout(ticket);
-        // 返回到首页
         return "redirect:/";
     }
 

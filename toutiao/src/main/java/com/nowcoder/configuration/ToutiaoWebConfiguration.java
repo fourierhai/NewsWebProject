@@ -19,8 +19,8 @@ public class ToutiaoWebConfiguration extends WebMvcConfigurerAdapter{
     public void addInterceptors(InterceptorRegistry registry) {
         // 默认全局的页面
         registry.addInterceptor(passportInterceptor);
-        //这个拦截器 只 判断 /setting 及其后面的页面 是否需要登录
-        registry.addInterceptor(loginRequiredInterceptor).addPathPatterns("/setting*");
+        //这个拦截器 只 判断 /msg/ 及其后面的页面 是否需要登录
+        registry.addInterceptor(loginRequiredInterceptor).addPathPatterns("/msg/*");
         super.addInterceptors(registry);
     }
 }

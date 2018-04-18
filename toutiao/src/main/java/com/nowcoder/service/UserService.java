@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
-
 @Service
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -76,29 +74,25 @@ public class UserService {
             map.put("msgname", "用户名不存在");
             return map;
         }
-        // 如果用户的密码和数据库里存放的密码不一致
+
         if (!ToutiaoUtil.MD5(password+user.getSalt()).equals(user.getPassword())) {
             map.put("msgpwd", "密码不正确");
             return map;
         }
 
-        //如果用户的用户名和密码正确，那么就下发ticket
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);
         return map;
     }
 
-    //给登录用户下发ticket
     private String addLoginTicket(int userId) {
         LoginTicket ticket = new LoginTicket();
         ticket.setUserId(userId);
         Date date = new Date();
-        //getTime返回是从格林威治时间到现在的ms，后面跟的其实是1天
         date.setTime(date.getTime() + 1000*3600*24);
+        ticket.setExpired(date);
         ticket.setStatus(0);
-        // 将UUID的- 转成""
         ticket.setTicket(UUID.randomUUID().toString().replaceAll("-", ""));
-        // 插入数据库
         loginTicketDAO.addTicket(ticket);
         return ticket.getTicket();
     }
@@ -106,7 +100,7 @@ public class UserService {
     public User getUser(int id) {
         return userDAO.selectById(id);
     }
-    // 退出登录
+
     public void logout(String ticket) {
         loginTicketDAO.updateStatus(ticket, 1);
     }
