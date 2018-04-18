@@ -1,2 +1,2 @@
 # NewsWebProject
-A web project developed with spring boot + mybtis +Mysql + redis + Ajax ,which is used to practice
+A web project developed with spring boot + mybtis +Mysql + redis + Freemarker ,which is used to practice
