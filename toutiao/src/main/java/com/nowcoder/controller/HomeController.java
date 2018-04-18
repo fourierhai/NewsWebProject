@@ -48,6 +48,9 @@ public class HomeController {
                         @RequestParam(value = "pop", defaultValue = "0") int pop) {
         // 自己定义一个pop请求参数
         model.addAttribute("vos", getNews(0, 0, 10));
+        if (hostHolder.getUser() != null) {
+            pop = 0;
+        }
         model.addAttribute("pop", pop);
         return "home";
     }
