@@ -1,10 +1,7 @@
 package com.nowcoder.controller;
 
 import com.nowcoder.model.*;
-import com.nowcoder.service.CommentService;
-import com.nowcoder.service.NewsService;
-import com.nowcoder.service.QiniuService;
-import com.nowcoder.service.UserService;
+import com.nowcoder.service.*;
 import com.nowcoder.util.ToutiaoUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,27 +37,31 @@ public class NewsController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    LikeService likeService;
+
     @RequestMapping(path = {"/news/{newsId}"}, method = {RequestMethod.GET})
     public String newsDetail(@PathVariable("newsId") int newsId, Model model) {
-        try {
-            News news = newsService.getById(newsId);
-            if (news != null) {
-                List<Comment> comments = commentService.getCommentsByEntity(news.getId(), EntityType.ENTITY_NEWS);
-                List<ViewObject> commentVOs = new ArrayList<ViewObject>();
-                for (Comment comment : comments) {
-                    ViewObject commentVO = new ViewObject();
-                    commentVO.set("comment", comment);
-                    commentVO.set("user", userService.getUser(comment.getUserId()));
-                    commentVOs.add(commentVO);
-                }
-                model.addAttribute("comments", commentVOs);
-            }
-            model.addAttribute("news", news);
-            model.addAttribute("owner", userService.getUser(news.getUserId()));
-        } catch (Exception e) {
-            logger.error("获取资讯明细错误" + e.getMessage());
+
+        News news = newsService.getById(newsId);
+        int localUserId = hostHolder.getUser() != null ? hostHolder.getUser().getId() : 0;
+        if (localUserId != 0) {
+            model.addAttribute("like", likeService.getLikeStatus(localUserId, EntityType.ENTITY_NEWS, news.getId()));
+        } else {
+            model.addAttribute("like", 0);
         }
-        return "detail.ftl";
+        List<Comment> comments = commentService.getCommentsByEntity(news.getId(), EntityType.ENTITY_NEWS);
+        List<ViewObject> commentVOs = new ArrayList<ViewObject>();
+        for (Comment comment : comments) {
+            ViewObject commentVO = new ViewObject();
+            commentVO.set("comment", comment);
+            commentVO.set("user", userService.getUser(comment.getUserId()));
+            commentVOs.add(commentVO);
+        }
+        model.addAttribute("comments", commentVOs);
+        model.addAttribute("news", news);
+        model.addAttribute("owner", userService.getUser(news.getUserId()));
+        return "detail";
     }
 
     @RequestMapping(path = {"/image"}, method = {RequestMethod.GET})
@@ -96,6 +97,7 @@ public class NewsController {
     @ResponseBody
     public String addNews(@RequestParam("image") String image,
                           @RequestParam("title") String title,
+
                           @RequestParam("link") String link) {
         try {
             News news = new News();

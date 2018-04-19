@@ -75,7 +75,7 @@
             </#if>
                 <div class="post">
                     <div class="votebar">
-                        <button class="click-like up" aria-pressed="false" title="赞同"><i class="vote-arrow"></i><span
+                        <button class="click-like up pressed" aria-pressed="false" title="赞同"><i class="vote-arrow"></i><span
                                 class="count">${vo.news.likeCount}</span></button>
                         <button class="click-dislike down" aria-pressed="true" title="反对"><i class="vote-arrow"></i>
                         </button>
