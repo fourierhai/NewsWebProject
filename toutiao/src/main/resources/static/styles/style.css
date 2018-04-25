@@ -5668,7 +5668,7 @@ footer {
   padding: 30px 0 15px 0;
   background: #2A2F35;
   color: #FFF;
-  position: absolute;
+  position: relative;
   left: 0;
   bottom: 0;
   vertical-align: baseline;

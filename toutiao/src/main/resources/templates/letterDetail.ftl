@@ -1,9 +1,8 @@
-<!--#parse("header.html")-->
 <#include "header.ftl">
     <div id="main">
         <div class="container">
             <ul class="letter-chatlist">
-                #foreach($msg in $messages)
+                <#list messages as msg>
                 <li id="msg-item-4009580">
                     <a class="list-head">
                         <img alt="头像" src="${msg.headUrl}">
@@ -21,8 +20,8 @@
                         </div>
                     </div>
                 </li>
-                #end
-</ul>
+                </#list>
+            </ul>
 
         </div>
         <script type="text/javascript">
@@ -52,20 +51,9 @@
                 });
               });
 
-              // $(window).on('touchmove scroll', function() {
-              //   if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-              //     $('div.backdrop').show();
-              //     $('div.share-help').show();
-              //   } else {
-              //     $('div.backdrop').hide();
-              //     $('div.share-help').hide();
-              //   }
-              // });
-
             });
 
           })
         </script>
     </div>
 <#include "footer.ftl">
-<!--#parse("footer.html")-->

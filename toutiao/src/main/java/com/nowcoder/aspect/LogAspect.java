@@ -27,6 +27,5 @@ public class LogAspect {
     @After("execution(* com.nowcoder.controller.IndexController.*(..))")
     public void aferMethod(JoinPoint joinPoint){
         logger.info("after method: ");
-
     }
 }

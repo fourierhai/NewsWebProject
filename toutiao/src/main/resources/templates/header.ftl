@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>头条资讯 - 牛客网</title>
@@ -20,7 +19,7 @@
     <script type="text/javascript" src="/scripts/main/component/popupLogin.js"></script>
     <script type="text/javascript" src="/scripts/main/component/upload.js"></script>
     <script type="text/javascript" src="/scripts/main/component/popupUpload.js"></script>
-    <script type="text/javascript" src="/scripts/main/site/home.js"></script>
+    <script type="text/javascript" src="/scripts/main/util/action.js"></script>
 
 </head>
 <body class="welcome_index">

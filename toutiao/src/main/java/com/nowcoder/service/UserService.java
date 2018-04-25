@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+
 @Service
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -79,6 +81,8 @@ public class UserService {
             map.put("msgpwd", "密码不正确");
             return map;
         }
+
+        map.put("userId", user.getId());
 
         String ticket = addLoginTicket(user.getId());
         map.put("ticket", ticket);

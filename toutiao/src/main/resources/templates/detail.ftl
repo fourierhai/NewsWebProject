@@ -1,17 +1,22 @@
-<!--#parse("header.html")-->
 <#include "header.ftl">
 
     <div id="main">
         <div class="container">
             <div class="post detail">
-
                 <div class="votebar">
-                    <button class="click-like up" aria-pressed="false" title="赞同"><i class="vote-arrow"></i><span class="count">${news.likeCount}</span></button>
-                    <button class="click-dislike down" aria-pressed="true" title="反对"><i class="vote-arrow"></i>
-                    </button>
+                    <#if 0<like>
+                    <button class="click-like up pressed" data-id="${news.id}" title="赞同"><i class="vote-arrow"></i><span class="count">${news.likeCount}</span></button>
+                    <#else>
+                    <button class="click-like up" data-id="${news.id}" title="赞同"><i class="vote-arrow"></i><span class="count">${news.likeCount}</span></button>
+                    </#if>
+                    <#if like<0>
+                    <button class="click-dislike down pressed" data-id="${news.id}" title="反对"><i class="vote-arrow"></i></button>
+                    <#else>
+                    <button class="click-dislike down" data-id="${news.id}" title="反对"><i class="vote-arrow"></i></button>
+                    </#if>
                 </div>
 
-                <div class="content" data-url="http://nowcoder.com/posts/5l3hjr">
+                <div class="content" >
                       <div >
                           <img class="content-img"  src="${news.image}" alt="">
                       </div>
@@ -29,7 +34,7 @@
                   </div>
             <div class="user-info">
                 <div class="user-avatar">
-                    <a href="http://nowcoder.com/u/125701"><img width="32" class="img-circle" src="${owner.headUrl}"></a>
+                    <a href="/user/${owner.id}"><img width="32" class="img-circle" src="${owner.headUrl}"></a>
                 </div>
                 </div>
 
@@ -39,11 +44,11 @@
                 <#if user??>
                 <span>评论 (${news.commentCount})</span>
                 <form method="post" action="/addComment">
-                  <div class="form-group text required comment_content">
-                      <label class="text required sr-only">
-                          <abbr title="required">*</abbr> 评论
-                      </label>
-                      <input type="hidden" name="newsId" value="${news.id}"/>
+                    <input name="newsId" type="hidden" value="${news.id}">
+                    <div class="form-group text required comment_content">
+                         <label class="text required sr-only">
+                            <abbr title="required">*</abbr> 评论
+                         </label>
                       <textarea rows="5" class="text required comment-content form-control" name="content" id="content"></textarea>
                   </div>
                   <div class="text-right">
@@ -99,20 +104,11 @@
                 });
               });
 
-              // $(window).on('touchmove scroll', function() {
-              //   if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-              //     $('div.backdrop').show();
-              //     $('div.share-help').show();
-              //   } else {
-              //     $('div.backdrop').hide();
-              //     $('div.share-help').hide();
-              //   }
-              // });
 
             });
 
           })
         </script>
+        <script type="text/javascript" src="/scripts/main/site/detail.js"></script>
     </div>
 <#include "footer.ftl">
-<!--#parse("footer.html")-->
